@@ -1,0 +1,22 @@
+{
+  "name": "bluemix-hello-node",
+  "version": "0.0.0",
+  "dependencies": {
+    "cf-deployment-tracker-client": "*",
+    "commander": "^2.6.0",
+    "express": "^4.14.1",
+    "http-post": "^0.1.1",
+    "http-proxy": "^1.8.1",
+    "mongodb": "^3.6.2",
+    "nodemon": "^2.0.6",
+    "socket.io": "^2.3.0"
+  },
+  "main": "server.js",
+  "scripts": {
+    "start": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/IBM-Bluemix/bluemix-hello-node.git"
+  }
+}

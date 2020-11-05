@@ -4,6 +4,7 @@
   "dependencies": {
     "cf-deployment-tracker-client": "*",
     "commander": "^2.6.0",
+    "ejs": "^3.1.5",
     "express": "^4.14.1",
     "http-post": "^0.1.1",
     "http-proxy": "^1.8.1",

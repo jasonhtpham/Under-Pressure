@@ -1,6 +1,7 @@
 let express = require("express");
 let app = express();
 let bodyParser = require('body-parser');
+let path = require('path');
 
 //var app = require('express')();
 let http = require('http').createServer(app);
@@ -8,12 +9,13 @@ let io = require('socket.io')(http);
 
 
 const MongoClient = require('mongodb').MongoClient;
-
+const uri = "mongodb+srv://dbUser:dbUser@hyperledgercertificate.hgp6r.mongodb.net/firstdb?retryWrites=true&w=majority";
+const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
 const port = process.env.PORT || 8080;
 
-const uri = "mongodb+srv://dbUser:dbUser@hyperledgercertificate.hgp6r.mongodb.net/firstdb?retryWrites=true&w=majority";
-const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+app.set('view engine','ejs');
+app.set('views', path.join(__dirname, './views'));
 
 app.use(bodyParser.json(), bodyParser.urlencoded({extended:true}));
 app.use(express.static(__dirname + '/public'));
@@ -48,16 +50,23 @@ getUserData = async (userId) => {
   }
 }
 
-handleLogicState = async (body) => {
-  const logicState = parseInt(body.queryResult.parameters.logicState);
+/**
+ * @description A function to handle actions based on the logicState variable chosen by user.
+ * 
+ * @param {Object} webhookRequest sent from DialogFlow.
+ * 
+ * @returns {Object} an object in form of a WebhookResponse.
+ */
+handleLogicState = async (webhookRequest) => {
+  const logicState = parseInt(webhookRequest.queryResult.parameters.logicState);
 
   let msg = {}
 
   switch (logicState) {
     case 1:
-      let id = body.originalDetectIntentRequest.payload.data.sender.id
-      let data = body.originalDetectIntentRequest.payload.data.postback.payload
-      let timestamp = body.originalDetectIntentRequest.payload.data.timestamp
+      let id = webhookRequest.originalDetectIntentRequest.payload.data.sender.id
+      let data = webhookRequest.originalDetectIntentRequest.payload.data.postback.payload
+      let timestamp = webhookRequest.originalDetectIntentRequest.payload.data.timestamp
 
       let userData = {
         id,
@@ -76,7 +85,7 @@ handleLogicState = async (body) => {
       break;
 
     case 3:
-      const userId = body.originalDetectIntentRequest.payload.data.sender.id;
+      const userId = webhookRequest.originalDetectIntentRequest.payload.data.sender.id;
       msg.payload = {};
       msg.payload.fulfillmentMessages=[
         {
@@ -113,7 +122,7 @@ app.get("/bot/profile", async (request, response) => {
 
   const userData = await getUserData(userId)
 
-  response.send(JSON.stringify(userData));
+  response.render('index', { title : "Under Pressure" , userId : userId, userData : JSON.stringify(userData) });
 });
 
 //socket test

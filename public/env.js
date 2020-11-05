@@ -18,10 +18,9 @@ $(document).ready(function(){
   //bind the button
   $('#testButton').click(testButtonFunction)
 
-  //test get call
-  $.get('/bot/profile', (data) => {
-    console.log(data)
-  })
+  // $.get('/bot', (result) => {
+  //   $(".content").html(`${result.data}`)
+  // })
 
   // $.post('/bot'), (data) => {
   //   console.log(`Bot test: ${data}`);

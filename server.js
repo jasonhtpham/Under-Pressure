@@ -36,12 +36,12 @@ recordUser = async (userData) => {
   }
 }
 
-getUserId = async (userId) => {
+getUserData = async (userId) => {
   try {
     await client.connect();
     const userData = await client.db("chatbot").collection("test").find({userId}).toArray()
 
-    return userData[0].userId;
+    return userData;
 
   } catch (err) {
     console.log(err);
@@ -76,9 +76,17 @@ handleLogicState = async (body) => {
       break;
 
     case 3:
-      const userId = await getUserId(body.originalDetectIntentRequest.payload.data.sender.id);
-      msg.payload = "";
-      msg.payload.fulfillmentText=`https://45f9db9f503b.ngrok.io/bot/profile?${userId}`
+      const userId = body.originalDetectIntentRequest.payload.data.sender.id;
+      msg.payload = {};
+      msg.payload.fulfillmentMessages=[
+        {
+          "text": {
+            "text": [
+              `https://8a9e83abc5c2.ngrok.io/bot/profile?userId=${userId}`
+            ]
+          }
+        }
+      ]
       break;
     
     default:
@@ -88,22 +96,24 @@ handleLogicState = async (body) => {
   return msg;
 }
 
-app.post("/bot", function (request, response, next) {
+app.post("/bot", async (request, response) => {
 
   const { body } = request;
 
-  const responsePackage = handleLogicState(body);
+  const responsePackage = await handleLogicState(body);
 
-  response.send(responsePackage);
+  // console.log(responsePackage.payload)
+
+  response.send(responsePackage.payload);
 
 });
 
-app.get("/bot/profile", function (request, response) {
-  const { userId } = request.query;
+app.get("/bot/profile", async (request, response) => {
+  const userId = request.query.userId;
 
-  console.log("API hit", userId)
-  
-  response.send(userId);
+  const userData = await getUserData(userId)
+
+  response.send(JSON.stringify(userData));
 });
 
 //socket test

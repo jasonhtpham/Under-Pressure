@@ -26,8 +26,9 @@ recordUser = async (userData) => {
     const collection = await client.db("chatbot").collection("test").insertOne(
         {
             userId: userData.id,
-            data: userData.data,
-            timestamp: userData.timestamp,             
+            timestamp: userData.timestamp,
+            answerNumber: userData.answerNumber,
+            answerLetter: userData.answerLetter,
         }
     )
 
@@ -50,6 +51,22 @@ getUserData = async (userId) => {
   }
 }
 
+getQuestions = async (questionGroup) => {
+  try {
+    await client.connect();
+    const questions = await client.db("chatbot").collection("questions").find({ group : questionGroup }).toArray()
+
+    // questions.forEach(q => {
+    //   console.log(q.value);
+    // })
+
+    return questions;
+
+  } catch (err) {
+    console.log(err);
+  }
+}
+
 /**
  * @description A function to handle actions based on the logicState variable chosen by user.
  * 
@@ -62,26 +79,88 @@ handleLogicState = async (webhookRequest) => {
 
   let msg = {}
 
+  /* 
+  logicState is defined as follow:
+  1: The user choose to Record Data.
+  2: The user answered the question -> server store data in db.
+  3: The user asks for Result -> server replies with URL to simple webpage.
+  */
+
   switch (logicState) {
     case 1:
-      let id = webhookRequest.originalDetectIntentRequest.payload.data.sender.id
-      let data = webhookRequest.originalDetectIntentRequest.payload.data.postback.payload
-      let timestamp = webhookRequest.originalDetectIntentRequest.payload.data.timestamp
+      const questions = await getQuestions(1);
 
-      let userData = {
-        id,
-        data,
-        timestamp
-      }
-
-      const result = await recordUser(userData);
-
-      msg.payload = userData;
-      msg.result = result;
-
+      msg.payload = {};
+      msg.payload.fulfillmentMessages=[
+        {
+          "text": {
+            "text": [
+              "Let's give your answer to these statement. \
+              NOTE: Type and answer NEVER or N if you never experienced the feeling"
+            ]
+          }
+        },
+        {
+          "card": {
+            "title": `${questions[0].value}`,
+            "subtitle": "Choose your best answer below OR type and answer NEVER or N if you never experienced the feeling",
+            "imageUri": "",
+            "buttons": [
+              {
+                "text": "Sometimes",
+                "postback": "S"
+              },
+              {
+                "text": "Often",
+                "postback": "O"
+              },
+              {
+                "text": "Almost Always",
+                "postback": "AA"
+              }
+            ]
+          }
+        }
+      ]
       break;
 
     case 2:
+      let id = webhookRequest.originalDetectIntentRequest.payload.data.sender.id;
+      let timestamp = webhookRequest.originalDetectIntentRequest.payload.data.timestamp;
+      let answerNumber = webhookRequest.queryResult.parameters.answer;
+      let answerLetter;
+
+      let queryText = webhookRequest.queryResult.queryText.toString().toLowerCase();
+
+      if ( queryText === "never" || queryText === 'n') {
+        answerLetter = "N";
+      } else {
+        answerLetter = webhookRequest.queryResult.queryText;
+      }
+
+      let userData = {
+        id,
+        timestamp,
+        answerNumber,
+        answerLetter
+      }
+
+      const result = await recordUser(userData);
+      // console.log(result)
+
+      // if (result) {
+      //   msg.payload = {};
+      //   msg.payload.fulfillmentMessages=[
+      //     {
+      //       "text": {
+      //         "text": [
+      //           "Thank you for answering!"
+      //         ]
+      //       }
+      //     }
+      //   ]
+      // }
+
       break;
 
     case 3:
@@ -91,7 +170,7 @@ handleLogicState = async (webhookRequest) => {
         {
           "text": {
             "text": [
-              `https://8a9e83abc5c2.ngrok.io/bot/profile?userId=${userId}`
+              `https://68307f5d77b4.ngrok.io/bot/profile?userId=${userId}`
             ]
           }
         }
@@ -110,6 +189,9 @@ app.post("/bot", async (request, response) => {
   const { body } = request;
 
   const responsePackage = await handleLogicState(body);
+
+  // msg.payload = userData;
+  // msg.result = result;
 
   // console.log(responsePackage.payload)
 

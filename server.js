@@ -1,3 +1,11 @@
+/**
+ * TODO: ask sequence of questions (we can get an array of questions by group already)
+ * 
+ * TODO: check user if he/she is new or return one
+ * 
+ * TODO: store question group value when storing user data -> ask new group of questions if the user return
+ */
+
 let express = require("express");
 let app = express();
 let bodyParser = require('body-parser');

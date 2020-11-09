@@ -171,6 +171,7 @@ handleLogicState = async (webhookRequest) => {
 
       break;
 
+      // Make sure you update the URL in the `fulfillmentMessages` when you have a new tunnel.
     case 3:
       const userId = webhookRequest.originalDetectIntentRequest.payload.data.sender.id;
       msg.payload = {};

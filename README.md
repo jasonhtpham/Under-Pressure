@@ -1,57 +1,5 @@
-Hello by Alessio:
-This is a new commit
-
-bluemix-hello-node
+Under Pressure
 ================================================================================
-
-A "Hello World" server in node.js sample for Bluemix.
-
-This repo contains a complete sample of a node.js program that you can deploy
-on IBM's [Bluemix](https://bluemix.net/) PaaS, which is based on
-the [Cloud Foundry open source project](http://cloudfoundry.org/).
-
-Before jumping into the code, make sure you have an IBM ID, by
-registering at the
-[IBM ID registration](https://www.ibm.com/account/profile/us?page=reg)
-page.  You will need the IBM ID to login to Bluemix from the command line.
-
-You will also need to install the `cf` command-line tool, available
-here:
-
-* <https://github.com/cloudfoundry/cli/releases>
-
-At the time of this writing, the most recent version is `cf v6.1.1`.
-
-
-
-install the code for the sample program
---------------------------------------------------------------------------------
-
-Click the magical button below to deploy the app.
-
-[![Deploy to Bluemix](https://bluemix.net/deploy/button.png)](https://bluemix.net/deploy)
-
-or....
-
-From a command/shell terminal
-* `cd` into the parent directory you want to install the project in
-* `git clone` the project into a child directory
-* `cd` into that child directory
-* run `npm install` to install dependencies
-
-For example:
-
-    $ cd Projects
-    $ git clone https://github.com/IBM-Bluemix/bluemix-hello-node
-
-        ... git output here ...
-
-    $ cd bluemix-hello-node
-
-    $ npm install
-
-        ... npm output here ...
-
 
 run locally
 --------------------------------------------------------------------------------
@@ -84,21 +32,29 @@ browser:
 
     http://localhost:8080/
 
-When you visit the above url the content will be Hello World
 
-    Hello World!!!
+Tunneling using ngrok
+--------------------------------------------------------------------------------
 
+Register an account and download the ngrok from [here](https://ngrok.com/download).
 
-Next, test it by visiting the following URL in your
-browser:
+Unzip the package and you will have a ngrok.exe file ready. Connect to your account, open terminal and `cd` to where the `ngrok.exe` is and type::
+```bash
+    ngrok authtoken <your_token>
+```
 
-    http://localhost:8080/hello
+Then, it is ready to be fired up:
+```bash
+    ngrok http 8080
+```
 
-When you visit the above url the content will be Hello World
+If it works, there will be a dashboard and a list of requests appearing in the terminal.
 
-    Hello World
+You can also monitor the requests by going to `localhost:4040`
 
-
+**NOTE: YOu have to update the URL of the tunnel to 2 places:
+- You have to change the URL in the code somewhere on line 181 (approximately) so the response can give you a working URL.
+- Update the webhook URL field in the fulfillment section of the Dialogflow agent so it will call the right webhook URL (just update the root URL, it should look something like this: `https://4e0dcccb6551.ngrok.io/bot`)
 
 logging into Bluemix
 --------------------------------------------------------------------------------

@@ -10,17 +10,19 @@ let express = require("express");
 let app = express();
 let bodyParser = require('body-parser');
 let path = require('path');
+var cfenv = require('cfenv');
 
 //var app = require('express')();
-let http = require('http').createServer(app);
-let io = require('socket.io')(http);
+//let http = require('http').createServer(app);
+//let io = require('socket.io')(http);
+var appEnv = cfenv.getAppEnv();
 
 
 const MongoClient = require('mongodb').MongoClient;
 const uri = "mongodb+srv://dbUser:dbUser@hyperledgercertificate.hgp6r.mongodb.net/firstdb?retryWrites=true&w=majority";
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
-const port = process.env.PORT || 8080;
+const port = appEnv.port || 8080;
 
 app.set('view engine','ejs');
 app.set('views', path.join(__dirname, './views'));
@@ -232,9 +234,16 @@ app.get("/bot/profile", async (request, response) => {
 // });
 
 
-http.listen(port,()=>{
+app.listen(port,()=>{
   console.log("Listening on port ", port);
-});
+})
+
+/*app.listen(appEnv.port, '0.0.0.0', function() {
+  // print a message when the server starts listening
+  console.log("server starting on " + appEnv.url);
+});*/
+
+
 
 //this is only needed for Cloud foundry 
 require("cf-deployment-tracker-client").track();

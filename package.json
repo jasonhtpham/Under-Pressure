@@ -10,7 +10,8 @@
     "http-proxy": "^1.8.1",
     "mongodb": "^3.6.2",
     "nodemon": "^2.0.6",
-    "socket.io": "^2.3.0"
+    "socket.io": "^2.3.0",
+    "cfenv": "1.0.x"
   },
   "main": "server.js",
   "scripts": {

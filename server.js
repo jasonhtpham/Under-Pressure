@@ -28,6 +28,10 @@ app.set('views', path.join(__dirname, './views'));
 app.use(bodyParser.json(), bodyParser.urlencoded({extended:true}));
 app.use(express.static(__dirname + '/public'));
 
+app.get('/test',(req,res)=>{
+  res.send("All good")
+})
+
 recordUser = async (userData) => {
   try {
     await client.connect();

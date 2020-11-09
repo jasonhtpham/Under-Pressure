@@ -1,5 +1,9 @@
 ---
 applications:
-- name:    hello-node
-  random-route: true
-  memory:  128M
+- path: .
+  name: pressure
+  environment_json: {}
+  memory: 256M
+  instances: 1
+  disk_quota: 1024M
+  services: []

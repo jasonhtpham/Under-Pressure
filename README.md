@@ -38,7 +38,9 @@ Tunneling using ngrok
 
 Register an account and download the ngrok from [here](https://ngrok.com/download).
 
-Unzip the package and you will have a ngrok.exe file ready. Connect to your account, open terminal and `cd` to where the `ngrok.exe` is and type::
+Unzip the package and you will have a ngrok.exe file ready.
+
+Now, connect to your account by opening terminal and `cd` to where the `ngrok.exe` is and type::
 ```bash
     ngrok authtoken <your_token>
 ```
@@ -48,11 +50,9 @@ Then, it is ready to be fired up:
     ngrok http 8080
 ```
 
-If it works, there will be a dashboard and a list of requests appearing in the terminal.
+If it works, there will be a dashboard and a list of requests appearing in the terminal. You can also be ableto  monitor the requests by going to `localhost:4040`
 
-You can also monitor the requests by going to `localhost:4040`
-
-**NOTE: YOu have to update the URL of the tunnel to 2 places:
+### NOTE: You have to update the new tunnel's URL to 2 places:
 - You have to change the URL in the code somewhere on line 181 (approximately) so the response can give you a working URL.
 - Update the webhook URL field in the fulfillment section of the Dialogflow agent so it will call the right webhook URL (just update the root URL, it should look something like this: `https://4e0dcccb6551.ngrok.io/bot`)
 

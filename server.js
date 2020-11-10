@@ -34,6 +34,76 @@ app.get('/test',(req,res)=>{
   res.send("All good")
 })
 
+recordInteraction=async(userId)=>{
+  await client.connect();
+  let interaction=client.db("chatbot").collection("users").insertOne()
+
+
+}
+
+
+createNewUser= async(userId)=>{
+  let msg={
+    "followupEventInput":{
+      "name":''
+    }
+  }
+ /* msg.fulfillmentMessages=[
+    {
+      "text": {
+        "text": [
+          "Let's give your answer to these statement. \
+          NOTE: Type and answer NEVER or N if you never experienced the feeling"
+        ]
+      }
+    },*/
+  try {
+    await client.connect();
+    const userData = await client.db("chatbot").collection("users").find({userId}).toArray()
+    console.log(userId)
+    //console.log(userData)
+    if(userData.length<1){
+      console.log('User does not exist, will create now')
+      const collection = await client.db("chatbot").collection("users").insertOne(
+        {
+            userId: userId,
+            dateCreated: Date.now(),
+            answers: [
+            {group:1,answered:false,answers:[]},
+            {group:2,answered:false,answers:[]},
+            {group:3,answered:false,answers:[]},
+            {group:4,answered:false,answers:[]},
+            {group:5,answered:false,answers:[]},
+            {group:6,answered:false,answers:[]},
+            {group:7,answered:false,answers:[]}],
+            allAnswers:[]
+        }
+    )
+    console.log(collection.ops)
+    console.log('user created')
+    msg={
+      "followupEventInput":{
+        "name":"newUser"
+      }
+    }
+    msg.followupEventInput.name="newUser"
+    }else{
+      console.log('User Exists')
+      msg={
+        "followupEventInput":{
+          "name":"existingUser"
+        }
+      }
+    }
+    return msg
+    //return userData;
+
+  } catch (err) {
+    console.log(err);
+  }
+
+}
+
 recordUser = async (userData) => {
   try {
     await client.connect();
@@ -57,6 +127,8 @@ getUserData = async (userId) => {
   try {
     await client.connect();
     const userData = await client.db("chatbot").collection("test").find({userId}).toArray()
+    
+  
 
     return userData;
 
@@ -90,6 +162,7 @@ getQuestions = async (questionGroup) => {
  */
 handleLogicState = async (webhookRequest) => {
   const logicState = parseInt(webhookRequest.queryResult.parameters.logicState);
+  console.log('Logic state',logicState)
 
   let msg = {}
 
@@ -101,8 +174,18 @@ handleLogicState = async (webhookRequest) => {
   */
 
   switch (logicState) {
+    case 0:
+      console.log('New Conversation started')
+      let resultUser=await createNewUser(webhookRequest.originalDetectIntentRequest.payload.data.sender.id)
+      console.log(resultUser)
+      let finalResult={
+        payload:resultUser
+      }
+      return finalResult
+      break;
     case 1:
-      const questions = await getQuestions(1);
+      console.log('here')
+      let questions = await getQuestions(1);
 
       msg.payload = {};
       msg.payload.fulfillmentMessages=[
@@ -159,7 +242,7 @@ handleLogicState = async (webhookRequest) => {
         answerLetter
       }
 
-      const result = await recordUser(userData);
+      let result = await recordUser(userData);
       // console.log(result)
 
       // if (result) {
@@ -179,7 +262,7 @@ handleLogicState = async (webhookRequest) => {
 
       // Make sure you update the URL in the `fulfillmentMessages` when you have a new tunnel.
     case 3:
-      const userId = webhookRequest.originalDetectIntentRequest.payload.data.sender.id;
+      let userId = webhookRequest.originalDetectIntentRequest.payload.data.sender.id;
       msg.payload = {};
       msg.payload.fulfillmentMessages=[
         {
@@ -201,9 +284,11 @@ handleLogicState = async (webhookRequest) => {
 
 app.post("/bot", async (request, response) => {
 
-  const { body } = request;
+  let { body } = request;
+  console.log(body)
 
-  const responsePackage = await handleLogicState(body);
+  let responsePackage = await handleLogicState(body);
+  console.log(responsePackage.payload)
 
   // msg.payload = userData;
   // msg.result = result;

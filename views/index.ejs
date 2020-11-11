@@ -37,9 +37,88 @@
             <h1 class="title"> <%= title %>  </h1>
             <div class="row">
                 <h3> Hello user <%= userId %>   </h3>
-                <p class="flow-text mainText">This is your data: <%= userData %> </p>
             </div>
-            <div class="row center" style="height: 150px;" >
+            <div class="row">
+                <div class="col l4 s12">
+                    Anxiety <%= mentalState.anxietyValue %>
+
+                </div>
+                <div class="col l4 s12">
+                    Depression <%= mentalState.depressionValue %>
+
+                </div>
+                <div class="col l4 s12">
+                    Stress <%= mentalState.stressValue %>
+
+                </div>
+
+            </div>
+
+            <div class="row">
+                <% for(var i=0; i<userData.answers.length; i++) {%>
+                    <li><b>Q<%= i+1 %></b> Value : <%= userData.answers[i].value %></li>
+                 <% } %>
+              
+            </div>
+
+            <div class="row center" >
+                <h2> Score Interpretation </h2> 
+                <p>
+                    The 21 item <b>D</b>epression <b>A</b>nxiety <b>S</b>tress <b>S</b>cale questionnaire is used as a quantitative measure of distress along the 3 axes of
+                    of depression, anxiety and stress reactions and management. Each of the questions is rated from 0 to 3. Therefore each of 
+                    the axes presents partial scores of 0 to 18-24 depending on the number of questions assigned.
+                </p>
+                <p>
+                    There have been created cut off points for each of the severity categories, however, 
+                    these should be cautiously used in conjunction to other clinical and observational data and are described in the table below:
+                </p>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Level/Disorder</th>
+                            <th>Depression</th>
+                            <th>Anxiety</th>
+                            <th>Stress</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Normal</td>
+                            <td>0 - 4</td>
+                            <td>0 - 3</td>
+                            <td>0 - 7</td>
+                        </tr>
+                        <tr>
+                            <td>Mild</td>
+                            <td>5 - 6</td>
+                            <td>4 - 5</td>
+                            <td>8 - 9</td>
+                        </tr>
+                        <tr>
+                            <td>Moderate</td>
+                            <td>7 - 10</td>
+                            <td>6 - 7</td>
+                            <td>10 - 12</td>
+                        </tr>
+                        <tr>
+                            <td>Severe</td>
+                            <td>11 - 13</td>
+                            <td>8 - 9</td>
+                            <td>13 - 16</td>
+                        </tr>
+                        <tr>
+                            <td>Extremely severe</td>
+                            <td>≥ 14</td>
+                            <td>≥ 10</td>
+                            <td>≥ 17</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+
+            <div class="row center" >
                 <img src="assets/ale2.jpg" alt="" class="circle responsive-img" style="height: 100%;padding-top: 5px; padding-left: 15px;"> <!-- notice the "circle" class -->
     
             </div>
@@ -49,7 +128,6 @@
     
             </div>
     
-
           
         </div>
     

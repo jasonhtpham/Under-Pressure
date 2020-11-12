@@ -282,7 +282,7 @@ const updateAnswer = async (userId, timestamp, parameters) => {
 
     if (questionIndex === 21) {
       client.db("chatbot").collection(dbName).updateOne({ userId: userId}, {
-        $set: { allAnswered : true }
+        $set: { allAnswered : true, dateCompleted: Date.now() }
       }, (err, result) => {
         console.log('result', result)
       })
@@ -364,43 +364,43 @@ const handleLogicState = async (webhookRequest) => {
       ]
       break;
 
-    case 2:
-      let id = webhookRequest.originalDetectIntentRequest.payload.data.sender.id;
-      let answerNumber = webhookRequest.queryResult.parameters.answer;
-      let answerLetter;
+    // case 2:
+    //   let id = webhookRequest.originalDetectIntentRequest.payload.data.sender.id;
+    //   let answerNumber = webhookRequest.queryResult.parameters.answer;
+    //   let answerLetter;
 
-      let queryText = webhookRequest.queryResult.queryText.toString().toLowerCase();
+    //   let queryText = webhookRequest.queryResult.queryText.toString().toLowerCase();
 
-      if (queryText === "never" || queryText === 'n') {
-        answerLetter = "N";
-      } else {
-        answerLetter = webhookRequest.queryResult.queryText;
-      }
+    //   if (queryText === "never" || queryText === 'n') {
+    //     answerLetter = "N";
+    //   } else {
+    //     answerLetter = webhookRequest.queryResult.queryText;
+    //   }
 
-      let userData = {
-        id,
-        timestamp,
-        answerNumber,
-        answerLetter
-      }
+    //   let userData = {
+    //     id,
+    //     timestamp,
+    //     answerNumber,
+    //     answerLetter
+    //   }
 
-      let result = await recordUser(userData);
-      // console.log(result)
+    //   let result = await recordUser(userData);
+    //   // console.log(result)
 
-      // if (result) {
-      //   msg.payload = {};
-      //   msg.payload.fulfillmentMessages=[
-      //     {
-      //       "text": {
-      //         "text": [
-      //           "Thank you for answering!"
-      //         ]
-      //       }
-      //     }
-      //   ]
-      // }
+    //   // if (result) {
+    //   //   msg.payload = {};
+    //   //   msg.payload.fulfillmentMessages=[
+    //   //     {
+    //   //       "text": {
+    //   //         "text": [
+    //   //           "Thank you for answering!"
+    //   //         ]
+    //   //       }
+    //   //     }
+    //   //   ]
+    //   // }
 
-      break;
+    //   break;
 
     // Make sure you update the URL in the `fulfillmentMessages` when you have a new tunnel.
     case 3:
@@ -471,6 +471,21 @@ const handleLogicState = async (webhookRequest) => {
 
       break;
 
+    case 13:
+      const userData = await getUserData(userId)
+      let mentalState = profileTracker(userData);
+      // console.log('[Completed mentalState]', mentalState)
+      updateAttempt(mentalState, userId, userData);
+
+
+      return {
+        payload: {
+          "followupEventInput": {
+            "name": "home"
+          }
+        }
+      };
+      break;
 
     default:
       break;
@@ -498,6 +513,18 @@ app.post("/bot", async (request, response) => {
 
 });
 
+const updateAttempt = async (mentalState, userId, userData) => {
+  client.db("chatbot").collection(dbName).updateOne({ userId: userId}, {
+    $addToSet: { 
+      attempts:{
+        completedTime: userData.dateCompleted,
+        'mentalState': mentalState,
+      }
+    }
+  }, (err, result) => {
+    console.log('result', result)
+  })
+}
 
 const profileTracker = (userData) => {
   console.log(userData)
@@ -553,9 +580,32 @@ app.get("/bot/profile", async (request, response) => {
   const userData = await getUserData(userId)
   let mentalState=profileTracker(userData);
 
-  console.log("[mentalState]: ")
+  console.log("[mentalState]: ", mentalState)
 
-  response.render('index', { title: "Under Pressure", userId: userId,mentalState, userData});
+  response.render('index', { title: "Under Pressure", userId: userId, mentalState, userData});
+});
+
+app.get("/results", async (request, response) => {
+  try {
+    try {
+      await client.connect();
+      const testResults = await client.db("chatbot").collection(dbName).find({}).toArray();
+  
+      // console.log('[Test Results]:', testResults)
+
+      let timeCompleted = [];
+      testResults.forEach(result => {
+        timeCompleted.push(new Date(result.dateCompleted));
+      })
+
+      response.render('results', {title: "Test Results", users:testResults, timeCompleted});
+  
+    } catch (err) {
+      console.log(err);
+    }
+  } catch (err) {
+
+  }
 });
 
 //socket test

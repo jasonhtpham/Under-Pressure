@@ -60,14 +60,14 @@ handleQuestion = async () => {
 
 
 const getCurrentQuestion = async (userId) => {
-  userData = await getUserData(userId)
+  let userData = await getUserData(userId)
   console.log(userData)
   let found = 0
 
   for (let a = 0; a < userData.answers.length; a++) {
 
     for (let i = 0; i < keyQuestions.length; i++) {
-      if (!userData.answers[a].answer && userData.answers[a].id == keyQuestions[i]) {
+      if (!userData.answers[a].answered && userData.answers[a].id == keyQuestions[i]) {
         console.log('[GetCUrrentQuestion]:', keyQuestions[i])
         found = keyQuestions[i]
         break;
@@ -144,7 +144,7 @@ const createNewUser = async (userId) => {
       let answers = []
       _populateArray = () => {
         for (i = 0; i < 21; i++) {
-          let template = { id: i + 1, answer: false, value: 0 }
+          let template = { id: i + 1, answered: false, value: 0, timestamp:null }
           answers.push(template)
         }
         return answers
@@ -156,7 +156,8 @@ const createNewUser = async (userId) => {
           userId: userId,
           dateCreated: Date.now(),
           answers: _populateArray(),
-          allAnswers: []
+          allAnswers: [],
+          allAnswered: false
         }
       )
       console.log(collection.ops)
@@ -199,25 +200,25 @@ const createNewUser = async (userId) => {
 
 }
 
-recordUser = async (userData) => {
-  try {
-    await client.connect();
-    const collection = await client.db("chatbot").collection("test").insertOne(
-      {
-        userId: userData.id,
-        timestamp: userData.timestamp,
-        answerNumber: userData.answerNumber,
-        answerLetter: userData.answerLetter,
-      }
-    )
-    console.log('[recordUser]:', collection.ops)
+// recordUser = async (userData) => {
+//   try {
+//     await client.connect();
+//     const collection = await client.db("chatbot").collection("test").insertOne(
+//       {
+//         userId: userData.id,
+//         timestamp: userData.timestamp,
+//         answerNumber: userData.answerNumber,
+//         answerLetter: userData.answerLetter,
+//       }
+//     )
+//     console.log('[recordUser]:', collection.ops)
 
-    return JSON.stringify(collection.ops);
+//     return JSON.stringify(collection.ops);
 
-  } catch (err) {
-    console.log(err);
-  }
-}
+//   } catch (err) {
+//     console.log(err);
+//   }
+// }
 
 const getUserData = async (userId) => {
   try {
@@ -235,58 +236,58 @@ const getUserData = async (userId) => {
   }
 }
 
-getQuestions = async (questionGroup) => {
-  try {
-    await client.connect();
-    const questions = await client.db("chatbot").collection("questions").find({ group: questionGroup }).toArray()
+// getQuestions = async (questionGroup) => {
+//   try {
+//     await client.connect();
+//     const questions = await client.db("chatbot").collection("questions").find({ group: questionGroup }).toArray()
 
-    // questions.forEach(q => {
-    //   console.log(q.value);
-    // })
+//     // questions.forEach(q => {
+//     //   console.log(q.value);
+//     // })
 
-    return questions;
+//     return questions;
 
-  } catch (err) {
-    console.log(err);
-  }
-}
+//   } catch (err) {
+//     console.log(err);
+//   }
+// }
 
-const updateAnswer = async (userId, parameters) => {
+const updateAnswer = async (userId, timestamp, parameters) => {
   // answer , question , followup
   const userData = await getUserData(userId);
-  console.log('[Update Answer]', userData)
+  // console.log('[Update Answer]', userData)
 
-  let answer = userData.answers[parameters.question - 1]
+  let userAnswer = userData.answers[parameters.question - 1]
   // console.log(answer)
-  answer.value = parseFloat(parameters.answer)
-  answer.answer = true
+  userAnswer.value = parseFloat(parameters.answer)
+  // answer.answered = true
 
   // console.log(answer)
-  userData.answers[parameters.question - 1] = answer
+  // userData.answers[parameters.question - 1] = answer
 
-  console.log('[Checking Answer]', answer)
-  console.log('[Checking userId]', userId)
-
-  // const test = await client.db("chatbot").collection("users-test").findOne(
-  //   {userId: userId, 'answers.$': 1}
-  // );
-  // console.log("Test db",test)
+  // console.log('[Checking Answer]', answer)
+  // console.log('[Checking userId]', userId)
 
   // await client.connect();
-  let testAnswer = parseInt(parameters.question)
-  console.log('test Answer', testAnswer)
-  client.db("chatbot").collection(dbName).updateOne({ userId: userId, 'answers.id': testAnswer }, {
-    $set: { "answers.$.answer": true, "answers.$.value": answer.value }
-  }, (err, result) => {
-    console.log('result', result)
-  })
+  let questionIndex = parseInt(parameters.question)
 
-  /*client.db("chatbot").collection("users-test").updateMany(
-    { 'userId' : `3284453798346989`  },
-    { $set: { "answers.$[element].value": `${answer.value}` } },
-    { arrayFilters: [{'element.id': `${parameters.question}` }]}, (result) => console.log("[Update Result]: ", result)
- )*/
+  // console.log('[Check Timestamp]', timestamp);
 
+  if (!userData.allAnswered) {
+    client.db("chatbot").collection(dbName).updateOne({ userId: userId, 'answers.id': questionIndex }, {
+      $set: { "answers.$.answered": true, "answers.$.value": userAnswer.value, "answers.$.timestamp" : timestamp }
+    }, (err, result) => {
+      console.log('result', result)
+    })
+
+    if (questionIndex === 21) {
+      client.db("chatbot").collection(dbName).updateOne({ userId: userId}, {
+        $set: { allAnswered : true }
+      }, (err, result) => {
+        console.log('result', result)
+      })
+    }
+  }
 }
 
 /**
@@ -296,10 +297,12 @@ const updateAnswer = async (userId, parameters) => {
  * 
  * @returns {Object} an object in form of a WebhookResponse.
  */
-handleLogicState = async (webhookRequest) => {
+const handleLogicState = async (webhookRequest) => {
   const logicState = parseInt(webhookRequest.queryResult.parameters.logicState);
   const parameters = webhookRequest.queryResult.parameters;
   let userId = webhookRequest.originalDetectIntentRequest.payload.data.sender.id;
+  let timestamp = webhookRequest.originalDetectIntentRequest.payload.data.timestamp;
+
 
   console.log('Logic state', logicState)
 
@@ -322,6 +325,7 @@ handleLogicState = async (webhookRequest) => {
       }
       return finalResult
       break;
+
     case 1:
       console.log('questions')
       let questions = await getQuestions(1);
@@ -362,7 +366,6 @@ handleLogicState = async (webhookRequest) => {
 
     case 2:
       let id = webhookRequest.originalDetectIntentRequest.payload.data.sender.id;
-      let timestamp = webhookRequest.originalDetectIntentRequest.payload.data.timestamp;
       let answerNumber = webhookRequest.queryResult.parameters.answer;
       let answerLetter;
 
@@ -406,7 +409,7 @@ handleLogicState = async (webhookRequest) => {
         {
           "text": {
             "text": [
-              `https://b671157c6c88.ngrok.io/bot/profile?userId=${userId}`
+              ` https://9a9c08b1dbd7.ngrok.io/bot/profile?userId=${userId}`
             ]
           }
         }
@@ -416,7 +419,7 @@ handleLogicState = async (webhookRequest) => {
       console.log('handling question')
       // let userId = webhookRequest.originalDetectIntentRequest.payload.data.sender.id;
 
-      updateAnswer(userId, parameters)
+      updateAnswer(userId, timestamp, parameters)
       console.log('[Update Answer Complete]')
       msg = {
         "followupEventInput": {

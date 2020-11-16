@@ -493,13 +493,13 @@ app.get("/results", async (request, response) => {
   try {
     try {
       await client.connect();
-      const testResults = await client.db("chatbot").collection(dbName).find({}).toArray();
+      const testResults = await client.db("chatbot").collection(answersDB).find({}).toArray();
   
       // console.log('[Test Results]:', testResults)
 
       let timeCompleted = [];
       testResults.forEach(result => {
-        let formattedTime = moment(result.dateCompleted)
+        let formattedTime = moment(parseInt(result.timestamp)).format('LL')
 
         // let relativeTime = moment(result.dateCompleted).fromNow(); // e.g. 10 hours ago
         // console.log(relativeTime);

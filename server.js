@@ -13,6 +13,7 @@ let path = require('path');
 //const { CLIENT_RENEG_WINDOW } = require("tls");
 
 const dbName='users-t1'
+const answersDB = 'answers'
 //var app = require('express')();
 //let http = require('http').createServer(app);
 //let io = require('socket.io')(http);
@@ -98,6 +99,23 @@ const getNextQuestion = async (userId) => {
         }
       }
     }
+
+    // Pick random set of question to ask if the user has finished the first test
+    // const userData = await client.db("chatbot").collection(dbName).findOne({ userId });
+    // console.log("[==== Test userData]", userData);
+    // const allAnswered = userData.allAnswered;
+    // console.log("[==== Test allAnswered]", allAnswered);
+
+
+    // if (allAnswered) {
+    //   randomQuestion = keyQuestions[Math.floor(Math.random() * array.length)];
+    //   return msg = {
+    //     "followupEventInput": {
+    //       "name": "program" + randomQuestion
+    //     }
+    //   }
+    // }
+
     msg = {
       "followupEventInput": {
         "name": "program" + question
@@ -154,7 +172,6 @@ const createNewUser = async (userId) => {
           userId: userId,
           dateCreated: Date.now(),
           answers: _populateArray(),
-          allAnswers: [],
           allAnswered: false
         }
       )
@@ -253,36 +270,42 @@ const getUserData = async (userId) => {
 const updateAnswer = async (userId, timestamp, parameters) => {
   // answer , question , followup
   const userData = await getUserData(userId);
-  // console.log('[Update Answer]', userData)
 
   let userAnswer = userData.answers[parameters.question - 1]
-  // console.log(answer)
+
   userAnswer.value = parseFloat(parameters.answer)
-  // answer.answered = true
-
-  // console.log(answer)
-  // userData.answers[parameters.question - 1] = answer
-
-  // console.log('[Checking Answer]', answer)
-  // console.log('[Checking userId]', userId)
-
-  // await client.connect();
+ 
   let questionIndex = parseInt(parameters.question)
 
   // console.log('[Check Timestamp]', timestamp);
+
+  client.db("chatbot").collection(answersDB).insertOne({ 
+    "questionNumber": questionIndex, 
+    "userId": userId, 
+    "answer" : userAnswer.value,
+    "timestamp" : timestamp 
+  }, (err, result) => {
+    if (err) {
+      console.log('Error when inserting answer', err)
+    }
+  })
 
   if (!userData.allAnswered) {
     client.db("chatbot").collection(dbName).updateOne({ userId: userId, 'answers.id': questionIndex }, {
       $set: { "answers.$.answered": true, "answers.$.value": userAnswer.value, "answers.$.timestamp" : timestamp }
     }, (err, result) => {
-      console.log('result', result)
+      if (err) {
+        console.log("Error when update an answer", err)
+      }
     })
 
     if (questionIndex === 21) {
       client.db("chatbot").collection(dbName).updateOne({ userId: userId}, {
         $set: { allAnswered : true, dateCompleted: Date.now() }
       }, (err, result) => {
-        console.log('result', result)
+        if (err) {
+          console.log('Error when update database after finish 21 questions', err)
+        }
       })
     }
   }
@@ -405,11 +428,25 @@ const handleLogicState = async (webhookRequest) => {
       msg.payload = {};
       msg.payload.fulfillmentMessages = [
         {
-          "text": {
-            "text": [
-              ` https://9a9c08b1dbd7.ngrok.io/bot/profile?userId=${userId}`
+          "card": {
+            "title": "Your Results",
+            "subtitle": "Choose action below",
+            "buttons": [
+              {
+                "text": "Show results",
+                "postback": `https://325b973324f4.ngrok.io/bot/profile?userId=${userId}`
+              },
+              {
+                "text": "Home",
+                "postback": 'home'
+              }
             ]
           }
+          // "text": {
+          //   "text": [
+          //     `https://325b973324f4.ngrok.io/bot/profile?userId=${userId}`
+          //   ]
+          // }
         }
       ]
       break;
@@ -475,14 +512,16 @@ const handleLogicState = async (webhookRequest) => {
       // console.log('[Completed mentalState]', mentalState)
       updateAttempt(mentalState, userId, userData);
 
-
-      return {
-        payload: {
+      randomQuestionIndex = keyQuestions[Math.floor(Math.random() * keyQuestions.length)];
+      
+      return randomQuestion = {
+        payload : {
           "followupEventInput": {
-            "name": "home"
+            "name": "program" + randomQuestionIndex
           }
         }
-      };
+      }
+
       break;
 
     default:
@@ -520,7 +559,9 @@ const updateAttempt = async (mentalState, userId, userData) => {
       }
     }
   }, (err, result) => {
-    console.log('result', result)
+    if (err) {
+      console.log('Error when update attempt', err);
+    }
   })
 }
 

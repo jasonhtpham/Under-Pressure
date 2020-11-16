@@ -1,11 +1,3 @@
-/**
- * TODO: ask sequence of questions (we can get an array of questions by group already)
- * 
- * TODO: check user if he/she is new or return one
- * 
- * TODO: store question group value when storing user data -> ask new group of questions if the user return
- */
-
 let express = require("express");
 let app = express();
 let bodyParser = require('body-parser');
@@ -99,22 +91,6 @@ const getNextQuestion = async (userId) => {
         }
       }
     }
-
-    // Pick random set of question to ask if the user has finished the first test
-    // const userData = await client.db("chatbot").collection(dbName).findOne({ userId });
-    // console.log("[==== Test userData]", userData);
-    // const allAnswered = userData.allAnswered;
-    // console.log("[==== Test allAnswered]", allAnswered);
-
-
-    // if (allAnswered) {
-    //   randomQuestion = keyQuestions[Math.floor(Math.random() * array.length)];
-    //   return msg = {
-    //     "followupEventInput": {
-    //       "name": "program" + randomQuestion
-    //     }
-    //   }
-    // }
 
     msg = {
       "followupEventInput": {
@@ -215,26 +191,6 @@ const createNewUser = async (userId) => {
 
 }
 
-// recordUser = async (userData) => {
-//   try {
-//     await client.connect();
-//     const collection = await client.db("chatbot").collection("test").insertOne(
-//       {
-//         userId: userData.id,
-//         timestamp: userData.timestamp,
-//         answerNumber: userData.answerNumber,
-//         answerLetter: userData.answerLetter,
-//       }
-//     )
-//     console.log('[recordUser]:', collection.ops)
-
-//     return JSON.stringify(collection.ops);
-
-//   } catch (err) {
-//     console.log(err);
-//   }
-// }
-
 const getUserData = async (userId) => {
   try {
     await client.connect();
@@ -250,22 +206,6 @@ const getUserData = async (userId) => {
     console.log(err);
   }
 }
-
-// getQuestions = async (questionGroup) => {
-//   try {
-//     await client.connect();
-//     const questions = await client.db("chatbot").collection("questions").find({ group: questionGroup }).toArray()
-
-//     // questions.forEach(q => {
-//     //   console.log(q.value);
-//     // })
-
-//     return questions;
-
-//   } catch (err) {
-//     console.log(err);
-//   }
-// }
 
 const updateAnswer = async (userId, timestamp, parameters) => {
   // answer , question , followup
@@ -331,9 +271,12 @@ const handleLogicState = async (webhookRequest) => {
 
   /* 
   logicState is defined as follow:
-  1: The user choose to Record Data.
-  2: The user answered the question -> server store data in db.
-  3: The user asks for Result -> server replies with URL to simple webpage.
+  0: Check if user is new or an existing one.
+  3: The user asks for result -> server replies in form of a card with option to take user to a webpage containing their results.
+  10: Ask user the right questions.
+  11: Take user to Home.
+  12: Get the next question according to the pre-defined sequence.
+  13: 
   */
 
   switch (logicState) {
@@ -346,82 +289,6 @@ const handleLogicState = async (webhookRequest) => {
       }
       return finalResult
       break;
-
-    case 1:
-      console.log('questions')
-      let questions = await getQuestions(1);
-
-      msg.payload = {};
-      msg.payload.fulfillmentMessages = [
-        {
-          "text": {
-            "text": [
-              "Let's give your answer to these statement. \
-              NOTE: Type and answer NEVER or N if you never experienced the feeling"
-            ]
-          }
-        },
-        {
-          "card": {
-            "title": `${questions[0].value}`,
-            "subtitle": "Choose your best answer below OR type and answer NEVER or N if you never experienced the feeling",
-            "imageUri": "",
-            "buttons": [
-              {
-                "text": "Sometimes",
-                "postback": "S"
-              },
-              {
-                "text": "Often",
-                "postback": "O"
-              },
-              {
-                "text": "Almost Always",
-                "postback": "AA"
-              }
-            ]
-          }
-        }
-      ]
-      break;
-
-    // case 2:
-    //   let id = webhookRequest.originalDetectIntentRequest.payload.data.sender.id;
-    //   let answerNumber = webhookRequest.queryResult.parameters.answer;
-    //   let answerLetter;
-
-    //   let queryText = webhookRequest.queryResult.queryText.toString().toLowerCase();
-
-    //   if (queryText === "never" || queryText === 'n') {
-    //     answerLetter = "N";
-    //   } else {
-    //     answerLetter = webhookRequest.queryResult.queryText;
-    //   }
-
-    //   let userData = {
-    //     id,
-    //     timestamp,
-    //     answerNumber,
-    //     answerLetter
-    //   }
-
-    //   let result = await recordUser(userData);
-    //   // console.log(result)
-
-    //   // if (result) {
-    //   //   msg.payload = {};
-    //   //   msg.payload.fulfillmentMessages=[
-    //   //     {
-    //   //       "text": {
-    //   //         "text": [
-    //   //           "Thank you for answering!"
-    //   //         ]
-    //   //       }
-    //   //     }
-    //   //   ]
-    //   // }
-
-    //   break;
 
     // Make sure you update the URL in the `fulfillmentMessages` when you have a new tunnel.
     case 3:
@@ -442,11 +309,6 @@ const handleLogicState = async (webhookRequest) => {
               }
             ]
           }
-          // "text": {
-          //   "text": [
-          //     `https://325b973324f4.ngrok.io/bot/profile?userId=${userId}`
-          //   ]
-          // }
         }
       ]
       break;
@@ -507,6 +369,8 @@ const handleLogicState = async (webhookRequest) => {
       break;
 
     case 13:
+      console.log('User completed test -> asking random set of questions')
+
       const userData = await getUserData(userId)
       let mentalState = profileTracker(userData);
       // console.log('[Completed mentalState]', mentalState)

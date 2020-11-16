@@ -10,23 +10,21 @@ let express = require("express");
 let app = express();
 let bodyParser = require('body-parser');
 let path = require('path');
-var cfenv = require('cfenv');
-const e = require("express");
-const { CLIENT_RENEG_WINDOW } = require("tls");
+//const { CLIENT_RENEG_WINDOW } = require("tls");
 
 const dbName='users-t1'
 //var app = require('express')();
 //let http = require('http').createServer(app);
 //let io = require('socket.io')(http);
-var appEnv = cfenv.getAppEnv();
+//var appEnv = cfenv.getAppEnv();
 
 
 const MongoClient = require('mongodb').MongoClient;
 const uri = "mongodb+srv://dbUser:dbUser@hyperledgercertificate.hgp6r.mongodb.net/firstdb?retryWrites=true&w=majority";
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
-const port = appEnv.port || 8080;
-
+//const port = appEnv.port || 8080;
+let port = process.env.PORT || 8080;
 
 const keyQuestions = [1, 6, 8, 11, 12, 14, 18]
 

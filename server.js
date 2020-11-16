@@ -2,6 +2,7 @@ let express = require("express");
 let app = express();
 let bodyParser = require('body-parser');
 let path = require('path');
+const moment = require('moment');
 //const { CLIENT_RENEG_WINDOW } = require("tls");
 
 const dbName='users-t1'
@@ -301,7 +302,7 @@ const handleLogicState = async (webhookRequest) => {
             "buttons": [
               {
                 "text": "Show results",
-                "postback": `https://325b973324f4.ngrok.io/bot/profile?userId=${userId}`
+                "postback": `https://ddbb8e8d2913.ngrok.io/bot/profile?userId=${userId}`
               },
               {
                 "text": "Home",
@@ -498,7 +499,12 @@ app.get("/results", async (request, response) => {
 
       let timeCompleted = [];
       testResults.forEach(result => {
-        timeCompleted.push(new Date(result.dateCompleted));
+        let formattedTime = moment(result.dateCompleted)
+
+        // let relativeTime = moment(result.dateCompleted).fromNow(); // e.g. 10 hours ago
+        // console.log(relativeTime);
+
+        timeCompleted.push(formattedTime);
       })
 
       response.render('results', {title: "Test Results", users:testResults, timeCompleted});

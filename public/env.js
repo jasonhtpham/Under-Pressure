@@ -18,6 +18,13 @@ $(document).ready(function(){
   //bind the button
   $('#testButton').click(testButtonFunction)
 
+  $('#csvButton').click( () => {
+    console.log("clicked")
+    $("#answersTable").table2excel({ 
+      filename: "Answers.xls" 
+    }); 
+  });
+
   // $.get('/bot', (result) => {
   //   $(".content").html(`${result.data}`)
   // })

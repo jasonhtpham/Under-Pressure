@@ -14,6 +14,9 @@
     <!-- Materialize icons-->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.css">
+
+
     <link href="styles.css" rel="stylesheet">
 </head>
 
@@ -37,9 +40,16 @@
             <h1 class="title" style=" color:#000000;"> <%= title %>  </h1>
 
             <div class="row center" >
-                <h2> Results Table </h2> 
+                <h2> Results Table </h2>
 
-                <table>
+            <div class="row center " style="padding-top:50px;">
+                <a id="csvButton" class="waves-effect waves-light btn-large " style="background-color: #9E65A9;">
+                    <i class="material-icons left" style="color:white; font-size: larger;">file_download</i>
+                    Download
+                </a>
+            </div>
+
+                <table id="answersTable">
                     <thead>
                         <!-- <tr>
                             <th>Users</th>
@@ -107,6 +117,10 @@
 
     <!-- Compiled and minified JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.js"></script>
+
+    <script src="//cdn.rawgit.com/rainabba/jquery-table2excel/1.1.0/dist/jquery.table2excel.min.js"></script> 
 
     <script src="env.js"></script>
 

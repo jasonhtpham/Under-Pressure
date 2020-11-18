@@ -56,9 +56,16 @@
 
             <div class="row">
                 <% for(var i=0; i<userData.answers.length; i++) {%>
-                    <li><b>Q<%= i+1 %></b> Value : <%= userData.answers[i].value %></li>
-                 <% } %>
-              
+                <dl>
+                    <dt>
+                        <b>Q<%= i+1 %>. <%= questionsContent[i] %> </b>
+                    </dt>
+                    <dd>
+                        Answer : <%= userData.answers[i].value == 0 ? "Never" : userData.answers[i].value == 1.5 ? "Sometimes" : "Always" %> 
+                        (<%= userData.answers[i].value %>).
+                    </dd>
+                </dl>
+                <% } %>
             </div>
 
             <div class="row center" >
@@ -123,9 +130,10 @@
     
             </div>
             <div class="row center " style="padding-top:50px;">
-                <a id="testButton" class="waves-effect waves-light btn-large " style="background-color: #9E65A9;"><i class="material-icons left" style="color:white; font-size: larger;">emoji_people</i>Click me!</a>
-
-    
+                <a id="userCsvButton" class="waves-effect waves-light btn-large " style="background-color: #9E65A9;">
+                    <i class="material-icons left" style="color:white; font-size: larger;">file_download</i>
+                    Download your answers
+                </a>
             </div>
     
           

@@ -21,6 +21,29 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 let port = process.env.PORT || 8080;
 
 const keyQuestions = [1, 6, 8, 11, 12, 14, 18]
+const questionsContent = [
+  "Did you find it hard to wind down?",
+  "Were you aware of dryness of your mouth?",
+  "Did you experience any positive feeling?",
+  "Did you experience breathing difficulty (eg, excessively rapid breathing, breathlessness in the absence of physical exertion)?",
+  "Did you find it difficult to work up the initiative to do things?",
+  "Did you tend to over-react to situations?",
+  "Did you experience trembling (eg, in the hands)?",
+  "Did you feel that you were using a lot of nervous energy?",
+  "Were you worried about situations in which you might panic and make a fool of yourself?",
+  "Did you feel that you had nothing to look forward to?",
+  "Did you find yourself getting agitated?",
+  "Did you find it difficult to relax?",
+  "Did you feel down-hearted and blue?",
+  "Were you intolerant of anything that kept you from getting on with what you were doing?",
+  "Did you feel you were close to panic?",
+  "Were you unable to become enthusiastic about anything?",
+  "Did you feel you weren’t worth much as a person?",
+  "Did you feel that you were rather touchy?",
+  "Were you aware of the action of your heart in the absence of physicalexertion (eg, sense of heart rate increase, heart missing a beat)?",
+  "Did you feel scared without any good reason?",
+  "Did you feel that life was meaningless?"
+]
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, './views'));
@@ -302,7 +325,7 @@ const handleLogicState = async (webhookRequest) => {
             "buttons": [
               {
                 "text": "Show results",
-                "postback": `https://ddbb8e8d2913.ngrok.io/bot/profile?userId=${userId}`
+                "postback": `https://10c2ff191122.ngrok.io/bot/profile?userId=${userId}`
               },
               {
                 "text": "Home",
@@ -481,12 +504,14 @@ app.get("/bot/profile", async (request, response) => {
   const userId = request.query.userId;
 
 
+  // console.log("[Question content]", questionsContent[0]);
+
   const userData = await getUserData(userId)
   let mentalState=profileTracker(userData);
 
   console.log("[mentalState]: ", mentalState)
 
-  response.render('index', { title: "Under Pressure", userId: userId, mentalState, userData});
+  response.render('index', { title: "Under Pressure", userId: userId, mentalState, userData, questionsContent});
 });
 
 app.get("/results", async (request, response) => {

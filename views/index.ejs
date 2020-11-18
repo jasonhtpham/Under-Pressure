@@ -14,7 +14,7 @@
     <!-- Materialize icons-->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-    <link href="styles.css" rel="stylesheet">
+    <link href="/styles.css" rel="stylesheet">
 </head>
 
 <body>
@@ -22,7 +22,7 @@
         <nav>
             <div class="nav-wrapper" style=" background-color: #9E65A9;">
                 <a href="#" class="brand-logo" style="height: 100%;">
-                    <img src="assets/ale.jpg" alt="" class="circle responsive-img" style="height: 100%;padding-top: 5px; padding-left: 15px;"> <!-- notice the "circle" class -->
+                    <img src="/assets/ale.jpg" alt="" class="circle responsive-img" style="height: 100%;padding-top: 5px; padding-left: 15px;"> <!-- notice the "circle" class -->
     
                 </a>
                 <ul id="nav-mobile" class="right hide-on-med-and-down">
@@ -31,7 +31,7 @@
             </div>
         </nav>
     </header>
-    <main>
+    <main style="background-color:#ffffff;">
 
         <div class="container">
             <h1 class="title"> <%= title %>  </h1>
@@ -130,9 +130,9 @@
     
             </div>
             <div class="row center " style="padding-top:50px;">
-                <a id="userCsvButton" class="waves-effect waves-light btn-large " style="background-color: #9E65A9;">
+                <a id="printButton" class="waves-effect waves-light btn-large " style="background-color: #9E65A9;">
                     <i class="material-icons left" style="color:white; font-size: larger;">file_download</i>
-                    Download your answers
+                    Print your results
                 </a>
             </div>
     
@@ -163,7 +163,7 @@
     <!-- Compiled and minified JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 
-    <script src="env.js"></script>
+    <script src="/env.js"></script>
 
 </body>
 

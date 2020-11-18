@@ -19,11 +19,16 @@ $(document).ready(function(){
   $('#testButton').click(testButtonFunction)
 
   $('#csvButton').click( () => {
-    console.log("clicked")
+    // console.log("clicked")
     $("#answersTable").table2excel({ 
       filename: "Answers.xls" 
     }); 
   });
+
+  $('#printButton').click( () => {
+    console.log("Clicked")
+    window.print();
+  })
 
   // $.get('/bot', (result) => {
   //   $(".content").html(`${result.data}`)

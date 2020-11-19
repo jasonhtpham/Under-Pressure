@@ -7,7 +7,7 @@
     border-radius: 5px 5px 0 0;
     overflow: hidden;
     box-shadow: 0 0 20px rgba(189, 28, 149, 0.15);
-    border-top: 2px solid #9e65a9c2;
+    border-top:  solid white;
     table-layout: fixed;
   
   }
@@ -22,7 +22,7 @@
     text-align: center;
     font-size: 15px;
     font-weight: bolder;
-    border-bottom: 2px solid #9e65a98f;
+    border-bottom: 0.05px solid #9e65a99c;
   }
 
   .responsive-table td {
@@ -31,15 +31,66 @@
     font-size: 14px;
   }
   
-  .responsive-table tbody tr {
-    border-bottom: 0.1 solid;
+  
+  
+  
+  
+  
+
+  /*Qs table*/
+
+  #Questions-table {
+  border-collapse: collapse;
+  margin: 50px 0;
+  border-radius: 5px 5px 0 0;
+  overflow: hidden;
+  box-shadow: 0 0 30px rgba(189, 28, 149, 0.15);
+  table-layout: auto;
+
   }
+
+#Questions-table th{
+
+  padding: 12px 15px;
+ font-size: 18px;
+  font-weight: bolder;
   
+}
+
+#Questions-table td {
+  padding: 12px 15px;
+  font-size: 17px;
+}
+
+
+
+.score{
+text-align: center;
+font-size: 22px;
+font-weight: bold;
   
-  
-  .responsive-table tbody tr:last-of-type {
-    border-bottom: 1px solid #9e65a9c2;
-  }
+}
+
+/*scores grid*/
+
+.grid-container {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  padding: 5px;
+  background-color: #9e65a99c ;
+  border-radius: 5px;
+}
+
+.grid-item {
+  background-color:white;
+  padding: 5px;
+  font-size: 17px;
+  text-align: center;
+  border-radius: 20px;
+  border: 1.5px solid ;
+}
+
+
 
 
   

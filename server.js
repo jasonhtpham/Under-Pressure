@@ -50,6 +50,7 @@ app.set('views', path.join(__dirname, './views'));
 
 app.use(bodyParser.json(), bodyParser.urlencoded({ extended: true }));
 app.use(express.static(__dirname + '/public'));
+app.use('/public', express.static('public'));
 
 app.get('/test', (req, res) => {
   res.send("All good")
@@ -238,16 +239,16 @@ const updateAnswer = async (userId, timestamp, parameters) => {
   let userAnswer = userData.answers[parameters.question - 1]
 
   userAnswer.value = parseFloat(parameters.answer)
- 
+
   let questionIndex = parseInt(parameters.question)
 
   // console.log('[Check Timestamp]', timestamp);
 
-  client.db("chatbot").collection(answersDB).insertOne({ 
-    "questionNumber": questionIndex, 
-    "userId": userId, 
+  client.db("chatbot").collection(answersDB).insertOne({
+    "questionNumber": questionIndex,
+    "userId": userId,
     "answer" : userAnswer.value,
-    "timestamp" : timestamp 
+    "timestamp" : timestamp
   }, (err, result) => {
     if (err) {
       console.log('Error when inserting answer', err)
@@ -277,9 +278,9 @@ const updateAnswer = async (userId, timestamp, parameters) => {
 
 /**
  * @description A function to handle actions based on the logicState variable chosen by user.
- * 
+ *
  * @param {Object} webhookRequest sent from DialogFlow.
- * 
+ *
  * @returns {Object} an object in form of a WebhookResponse.
  */
 const handleLogicState = async (webhookRequest) => {
@@ -293,14 +294,14 @@ const handleLogicState = async (webhookRequest) => {
 
   let msg = {}
 
-  /* 
+  /*
   logicState is defined as follow:
   0: Check if user is new or an existing one.
   3: The user asks for result -> server replies in form of a card with option to take user to a webpage containing their results.
   10: Ask user the right questions.
   11: Take user to Home.
   12: Get the next question according to the pre-defined sequence.
-  13: 
+  13:
   */
 
   switch (logicState) {
@@ -401,7 +402,7 @@ const handleLogicState = async (webhookRequest) => {
       updateAttempt(mentalState, userId, userData);
 
       randomQuestionIndex = keyQuestions[Math.floor(Math.random() * keyQuestions.length)];
-      
+
       return randomQuestion = {
         payload : {
           "followupEventInput": {
@@ -440,7 +441,7 @@ app.post("/bot", async (request, response) => {
 
 const updateAttempt = async (mentalState, userId, userData) => {
   client.db("chatbot").collection(dbName).updateOne({ userId: userId}, {
-    $addToSet: { 
+    $addToSet: {
       attempts:{
         completedTime: userData.dateCompleted,
         'mentalState': mentalState,
@@ -519,7 +520,7 @@ app.get("/results", async (request, response) => {
     try {
       await client.connect();
       const testResults = await client.db("chatbot").collection(answersDB).find({}).toArray();
-  
+
       // console.log('[Test Results]:', testResults)
 
       let timeCompleted = [];
@@ -533,7 +534,7 @@ app.get("/results", async (request, response) => {
       })
 
       response.render('results', {title: "Test Results", users:testResults, timeCompleted});
-  
+
     } catch (err) {
       console.log(err);
     }
@@ -566,5 +567,5 @@ app.listen(port, () => {
 
 
 
-//this is only needed for Cloud foundry 
+//this is only needed for Cloud foundry
 require("cf-deployment-tracker-client").track();

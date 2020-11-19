@@ -1,0 +1,40 @@
+/* Research results  table*/
+
+#answersTable {
+    border-collapse: collapse;
+    margin: 25px 0;
+    border-radius: 5px 5px 0 0;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(189, 28, 149, 0.15);
+    border-top: 2px solid #9e65a99c;
+    
+    }
+  
+    #answersTable thead tr {
+      background-color: #9e65a99c;
+    }
+  
+    #answersTable th{
+  
+      padding: 12px 15px;
+      text-align: center;
+      font-size: 15px;
+      font-weight: bolder;
+    }
+  
+    #answersTable tbody tr {
+      border-bottom: 0.1 solid;
+    }
+  
+    #answersTable td {
+      padding: 12px 15px;
+      text-align: center;
+      font-size: 14px;
+    }
+  
+  #answersTable tr:last-of-type {
+     
+    border-bottom: 2px solid #9e65a99c;
+    }
+  
+  

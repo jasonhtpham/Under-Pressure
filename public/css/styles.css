@@ -1,29 +1,38 @@
 
 /* Score interpretation table */
 
+
+body{
+  font-family: sans-serif;
+
+}
+
+
 .responsive-table {
     border-collapse: collapse;
     margin: 25px 0;
     border-radius: 5px 5px 0 0;
+    display: inline-table;
     overflow: hidden;
-    box-shadow: 0 0 20px rgba(189, 28, 149, 0.15);
-    border-top:  solid white;
-    table-layout: fixed;
+    box-shadow: 0 0 20px rgba(255, 255, 224, 0.671);
+    border-top:  solid rgba(255, 255, 224, 0.87);
+    font-family: sans-serif;
+    background-color: rgba(255, 255, 224, 0.589);
+    outline: solid 2px;
   
   }
   
-  .responsive-table thead tr {
-    background-color: #9e65a99c;
-  }
   
   .responsive-table th{
 
     padding: 12px 15px;
     text-align: center;
     font-size: 15px;
-    font-weight: bolder;
-    border-bottom: 0.05px solid #9e65a99c;
+    font-weight: bold;
+    
+   
   }
+  
 
   .responsive-table td {
     padding: 12px 15px;
@@ -32,16 +41,40 @@
   }
   
   
+  .responsive-table tbody tr:nth-child(1) td:nth-child(1) {
+    background-color: lightgreen;
   
-  
-  
-  
+ }
+
+ .responsive-table tbody tr:nth-child(2) td:nth-child(1) {
+  background-color: rgb(83, 183, 223);
+}
+
+.responsive-table tbody tr:nth-child(3) td:nth-child(1) {
+  background-color: rgba(238, 229, 102, 0.733);
+}
+
+.responsive-table tbody tr:nth-child(4) td:nth-child(1) {
+  background-color: rgba(255, 128, 43, 0.767);
+}
+
+.responsive-table tbody tr:nth-child(5) td:nth-child(1) {
+  background-color: rgba(241, 86, 86, 0.836);
+
+
+}
+/*
+.responsive-table tbody tr:nth-child(1) td:nth-child(2), tbody tr:nth-child(1) td:nth-child(3),tbody tr:nth-child(1) td:nth-child(4) {
+  background-color: rgba(144, 238, 144, 0.548);
+}
+
+*/
 
   /*Qs table*/
 
   #Questions-table {
   border-collapse: collapse;
-  margin: 50px 0;
+  margin: 25px 0;
   border-radius: 5px 5px 0 0;
   overflow: hidden;
   box-shadow: 0 0 30px rgba(189, 28, 149, 0.15);
@@ -76,21 +109,164 @@ font-weight: bold;
 .grid-container {
   display: grid;
   grid-template-columns: auto auto auto;
-  padding: 5px;
-  background-color: #9e65a99c ;
-  border-radius: 5px;
+  padding: 5px; 
+
 }
 
-.grid-item {
-  background-color:white;
-  padding: 5px;
+/*scores background color*/
+
+#anxiety-a {
+  padding: 20px 20px;
   font-size: 17px;
+  font-weight: bold;
+  text-align: middle;
   text-align: center;
-  border-radius: 20px;
-  border: 1.5px solid ;
+  border: 4px solid white;
+  background-color: lightgreen;
 }
 
 
+#anxiety-b {
+  padding: 20px 20px;
+  font-size: 17px;
+  font-weight: bold;
+  text-align: middle;
+  text-align: center;
+  border: 4px solid white;
+  background-color: rgb(83, 183, 223);
+}
+
+#anxiety-c {
+  padding: 20px 20px;
+  font-size: 17px;
+  font-weight: bold;
+  text-align: middle;
+  text-align: center;
+  border: 4px solid white;
+  background-color: rgba(238, 229, 102, 0.733);
+}
+
+#anxiety-d {
+  padding: 20px 20px;
+  font-size: 17px;
+  font-weight: bold;
+  text-align: middle;
+  text-align: center;
+  border: 4px solid white;
+  background-color: rgba(255, 128, 43, 0.767);
+}
+
+#anxiety-e {
+  padding: 20px 20px;
+  font-size: 17px;
+  font-weight: bold;
+  text-align: middle;
+  text-align: center;
+  border: 4px solid white;
+  background-color: rgba(241, 86, 86, 0.836);
+}
+
+#depression-a {
+  padding: 20px 20px;
+  font-size: 17px;
+  font-weight: bold;
+  text-align: middle;
+  text-align: center;
+  border: 4px solid white;
+  background-color: lightgreen;
+}
+
+
+#depression-b {
+  padding: 20px 20px;
+  font-size: 17px;
+  font-weight: bold;
+  text-align: middle;
+  text-align: center;
+  border: 4px solid white;
+  background-color: rgb(83, 183, 223);
+}
+
+#depression-c {
+  padding: 20px 20px;
+  font-size: 17px;
+  font-weight: bold;
+  text-align: middle;
+  text-align: center;
+  border: 4px solid white;
+  background-color: rgba(238, 229, 102, 0.733);
+}
+
+#depression-d {
+  padding: 20px 20px;
+  font-size: 17px;
+  font-weight: bold;
+  text-align: middle;
+  text-align: center;
+  border: 4px solid white;
+  background-color: rgba(255, 128, 43, 0.767);
+}
+
+#depression-e {
+  padding: 20px 20px;
+  font-size: 17px;
+  font-weight: bold;
+  text-align: middle;
+  text-align: center;
+  border: 4px solid white;
+  background-color: rgba(241, 86, 86, 0.836);
+}
+
+#stress-a {
+  padding: 20px 20px;
+  font-size: 17px;
+  font-weight: bold;
+  text-align: middle;
+  text-align: center;
+  border: 4px solid white;
+  background-color: lightgreen;
+}
+
+
+#stress-b {
+  padding: 20px 20px;
+  font-size: 17px;
+  font-weight: bold;
+  text-align: middle;
+  text-align: center;
+  border: 4px solid white;
+  background-color: rgb(83, 183, 223);
+}
+
+#stress-c {
+  padding: 20px 20px;
+  font-size: 17px;
+  font-weight: bold;
+  text-align: middle;
+  text-align: center;
+  border: 4px solid white;
+  background-color: rgba(238, 229, 102, 0.733);
+}
+
+#stress-d {
+  padding: 20px 20px;
+  font-size: 17px;
+  font-weight: bold;
+  text-align: middle;
+  text-align: center;
+  border: 4px solid white;
+  background-color: rgba(255, 128, 43, 0.767);
+}
+
+#stress-e {
+  padding: 20px 20px;
+  font-size: 17px;
+  font-weight: bold;
+  text-align: middle;
+  text-align: center;
+  border: 4px solid white;
+  background-color: rgba(241, 86, 86, 0.836);
+}
 
 
   

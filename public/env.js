@@ -1,25 +1,13 @@
-const testButtonFunction=()=>{
-  alert('Thank you for clicking')
-}
-
-// connect to the socket
-
-// let socket = io();
-
-
-// socket.on('number', (msg) => {
-//     console.log('Random number: ' + msg);
-// })
-
 // console.log('test')
 $(document).ready(function(){
   console.log('Ready')
-  
-  //bind the button
-  $('#testButton').click(testButtonFunction)
+
+  $('#answersTable').DataTable({
+    "searching": false, "bLengthChange": false, "pageLength": 10, responsive: true
+    });
+    $('.dataTables_length').addClass('bs-select');
 
   $('#csvButton').click( () => {
-    // console.log("clicked")
     $("#answersTable").table2excel({ 
       filename: "Answers.xls" 
     }); 

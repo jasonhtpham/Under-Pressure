@@ -18,13 +18,13 @@
 
 
     <link href="styles.css" rel="stylesheet">
-    <link href= "/public/css/styles1.css" rel="stylesheet" type="text/css" />
+    <link href= "/public/css/results.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
     <header>
         <nav>
-            <div class="nav-wrapper" style=" background-color: #9E65A9;">
+            <div class="nav-wrapper" style=" background-color: #ae93d9;">
                 <a href="#" class="brand-logo" style="height: 100%;">
                     <img src="assets/ale.jpg" alt="" class="circle responsive-img" style="height: 100%;padding-top: 5px; padding-left: 15px;"> <!-- notice the "circle" class -->
     
@@ -35,57 +35,61 @@
             </div>
         </nav>
     </header>
-    <main style=" background-color:#ffffff;">
+    <main style=" background-color:#eab0c3;">
 
         <div class="container">
-            <h1 class="title"> <%= title %>  </h1>
+            <!-- <h1> <%= title %>  </h1> -->
 
-            <div class="row center" >
-                <h2> Results Table </h2>
+            <!-- <div class="container" > -->
+                <div class="row center">
+                    <h2> Test Results Table </h2>
+                </div>
 
-            <div class="row center " style="padding-top:50px;">
-                <a id="csvButton" class="waves-effect waves-light btn-large " style="background-color: #9E65A9;">
-                    <i class="material-icons left" style="color:white; font-size: larger;">file_download</i>
-                    Download
-                </a>
-            </div>
+                <div class="row center">
+                    <a id="csvButton" class="waves-effect waves-light btn-large " style="background-color: #ae93d9;">
+                        <i class="material-icons left" style="color:white; font-size: larger;">file_download</i>
+                        Download
+                    </a>
+                </div>
 
-                <table id="answersTable">
-                    <thead>
-                        <!-- <tr>
-                            <th>Users</th>
-                            <th>Depression</th>
-                            <th>Anxiety</th>
-                            <th>Stress</th>
-                            <th>Completed time</th>
-                        </tr> -->
-                        <tr>
-                            <th>Users</th>
-                            <th>Question</th>
-                            <th>Answer Value</th>
-                            <th>Time</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <% for(var i=0; i < users.length; i++) {%>
+                <div class="row center">
+                    <table id="answersTable">
+                        <thead>
+                            <!-- <tr>
+                                <th>Users</th>
+                                <th>Depression</th>
+                                <th>Anxiety</th>
+                                <th>Stress</th>
+                                <th>Completed time</th>
+                            </tr> -->
                             <tr>
-                                <td> <%= users[i].userId %> </td>
-                                <td> <%= users[i].questionNumber %> </td>
-                                <td> <%= users[i].answer %> </td>
-                                <td> <%= timeCompleted[i] %> </td>
+                                <th>Users</th>
+                                <th>Question</th>
+                                <th>Answer Value</th>
+                                <th>Time</th>
                             </tr>
-
-                         <% } %>
-                        
-                    </tbody>
-                </table>
-
-            </div>
-
-            <div class="row center" >
-                <img src="assets/ale2.jpg" alt="" class="circle responsive-img" style="height: 100%;padding-top: 5px; padding-left: 15px;"> <!-- notice the "circle" class -->
+                        </thead>
+                        <tbody>
+                            <% for(var i=0; i < users.length; i++) {%>
+                                <tr>
+                                    <td> <%= users[i].userId %> </td>
+                                    <td> <%= users[i].questionNumber %> </td>
+                                    <td> <%= users[i].answer %> </td>
+                                    <td> <%= timeCompleted[i] %> </td>
+                                </tr>
     
-            </div>
+                             <% } %>
+                            
+                        </tbody>
+                    </table>
+                </div>
+
+            <!-- </div> -->
+
+            <!-- <div class="row center" >
+                <img src="assets/ale2.jpg" alt="" class="circle responsive-img" style="height: 100%;padding-top: 5px; padding-left: 15px;">
+    
+            </div> -->
             <!-- <div class="row center " style="padding-top:50px;">
                 <a id="testButton" class="waves-effect waves-light btn-large " style="background-color: #9E65A9;"><i class="material-icons left" style="color:white; font-size: larger;">emoji_people</i>Click me!</a>
 
@@ -96,7 +100,7 @@
         </div>
     
     </main>
-    <footer class="page-footer">
+    <footer class="page-footer" style=" background-color: #ae93d9;">
         <div class="footer-copyright">
           <div class="container">
           © 2020 Copyright AlexNexus
@@ -124,7 +128,6 @@
     <script src="//cdn.rawgit.com/rainabba/jquery-table2excel/1.1.0/dist/jquery.table2excel.min.js"></script> 
 
     <script src="env.js"></script>
-    <script src="/public/Js/app.js"></script>
 
 </body>
 

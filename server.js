@@ -326,7 +326,7 @@ const handleLogicState = async (webhookRequest) => {
             "buttons": [
               {
                 "text": "Show results",
-                "postback": `https://10c2ff191122.ngrok.io/bot/profile?userId=${userId}`
+                "postback": `https://f23ad7c602d7.ngrok.io/bot/profile?userId=${userId}`
               },
               {
                 "text": "Home",

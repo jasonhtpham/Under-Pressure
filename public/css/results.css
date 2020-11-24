@@ -8,6 +8,10 @@ h2 {
   color: #3f0e49;
 }
 
+/* body {
+  background-color:#eab0c3;
+} */
+
 #answersTable {
     border-collapse: collapse;
     table-layout: auto;
@@ -24,8 +28,6 @@ h2 {
     }
   
     #answersTable th{
-  
-      padding: 12px 15px;
       text-align: center;
       font-size: 15px;
       font-weight: bolder;
@@ -44,11 +46,10 @@ h2 {
     }
   
   #answersTable tr:last-of-type {
-     
     border-bottom: 2px solid #ef9306;
     }
 
 a.paginate_button {
   background-color: #ae93d9;
+  overflow-x:auto;  
 }
-  

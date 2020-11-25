@@ -455,7 +455,7 @@ const updateAttempt = async (mentalState, userId, userData) => {
 }
 
 const profileTracker = (userData) => {
-  console.log(userData)
+  // console.log(userData)
 
   /// ■ Depression symptoms related items: 3, 5, 10, 13, 16, 17, 21.
 
@@ -510,9 +510,9 @@ app.get("/bot/profile", async (request, response) => {
   const userData = await getUserData(userId)
   let mentalState=profileTracker(userData);
 
-  console.log("[mentalState]: ", mentalState)
+  // console.log("[mentalState]: ", mentalState)
 
-  response.render('index', { title: "Under Pressure", userId: userId, mentalState, userData, questionsContent});
+  response.render('user', { title: "Under Pressure", userId: userId, mentalState, userData, questionsContent});
 });
 
 app.get("/results", async (request, response) => {

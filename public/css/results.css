@@ -19,7 +19,7 @@ h2 {
     border-radius: 5px 5px 0 0;
     overflow: hidden;
     box-shadow: 0 0 20px rgba(189, 28, 149, 0.15);
-    border-top: 2px solid #ef9306;
+    border-top: 2px solid #ae93d9;
     }
   
     #answersTable thead tr {
@@ -34,8 +34,8 @@ h2 {
     }
   
     #answersTable tbody tr {
-      border: 2px solid #ef9306;
-      background-color: #f0d485;
+      border: 2px solid #ae93d9;
+      background-color: rgba(255, 255, 224, 0.589);
       color: #000000;
     }
   
@@ -46,7 +46,7 @@ h2 {
     }
   
   #answersTable tr:last-of-type {
-    border-bottom: 2px solid #ef9306;
+    border-bottom: 2px solid #ae93d9;
     }
 
 a.paginate_button {

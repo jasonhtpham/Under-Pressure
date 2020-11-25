@@ -1,6 +1,12 @@
 
 /* Score interpretation table */
+h1 {
+  color: #3f0e49;
+}
 
+h2 {
+  color: #3f0e49;
+}
 
 body{
   font-family: sans-serif;
@@ -23,13 +29,9 @@ body{
   
   
   .responsive-table th{
-
-    padding: 12px 15px;
     text-align: center;
+    padding: 12px 15px;
     font-size: 15px;
-    font-weight: bold;
-    
-   
   }
   
 
@@ -38,29 +40,41 @@ body{
     text-align: center;
     font-size: 14px;
   }
-  
+
+  .responsive-table tr {
+    /* padding: 12px 15px; */
+    text-align: center;
+    font-size: 14px;
+  }
   
   .responsive-table tbody tr:nth-child(1) td:nth-child(1) {
     background-color: lightgreen;
-  
+    font-weight: bold;
+    text-align: center;
  }
 
  .responsive-table tbody tr:nth-child(2) td:nth-child(1) {
-  background-color: rgb(83, 183, 223);
+    font-weight: bold;
+    text-align: center;
+    background-color:#9fe6ec;
 }
 
 .responsive-table tbody tr:nth-child(3) td:nth-child(1) {
-  background-color: rgba(238, 229, 102, 0.733);
+    font-weight: bold;
+    text-align: center;
+    background-color: #f0d485;
 }
 
 .responsive-table tbody tr:nth-child(4) td:nth-child(1) {
-  background-color: rgba(255, 128, 43, 0.767);
+    font-weight: bold;
+    text-align: center;
+    background-color: #f19c0a;
 }
 
 .responsive-table tbody tr:nth-child(5) td:nth-child(1) {
-  background-color: rgba(241, 86, 86, 0.836);
-
-
+    font-weight: bold;
+    text-align: center;
+    background-color: rgba(241, 86, 86, 0.836);
 }
 /*
 .responsive-table tbody tr:nth-child(1) td:nth-child(2), tbody tr:nth-child(1) td:nth-child(3),tbody tr:nth-child(1) td:nth-child(4) {
@@ -72,19 +86,20 @@ body{
   /*Qs table*/
 
   #Questions-table {
-  border-collapse: collapse;
+  /* border-collapse: collapse; */
   margin: 25px 0;
   border-radius: 5px 5px 0 0;
+  border: 2px solid #ae93d9;
   overflow: hidden;
   box-shadow: 0 0 30px rgba(189, 28, 149, 0.15);
   table-layout: auto;
-
+  background-color: rgba(255, 255, 224, 0.589);
   }
 
 #Questions-table th{
 
   padding: 12px 15px;
- font-size: 18px;
+  font-size: 18px;
   font-weight: bolder;
   
 }
@@ -105,12 +120,12 @@ font-weight: bold;
 
 /*scores grid*/
 
-.grid-container {
+/* .grid-container {
   display: grid;
   grid-template-columns: auto auto auto;
   padding: 5px; 
 
-}
+} */
 
 /*scores background color*/
 
@@ -120,7 +135,9 @@ font-weight: bold;
   font-weight: bold;
   text-align: middle;
   text-align: center;
-  border: 4px solid white;
+  border-collapse: collapse;
+  margin-bottom: 5px; 
+  border-radius: 1em;
   background-color: lightgreen;
 }
 
@@ -131,8 +148,10 @@ font-weight: bold;
   font-weight: bold;
   text-align: middle;
   text-align: center;
-  border: 4px solid white;
-  background-color: rgb(83, 183, 223);
+  border-collapse: collapse;
+  margin-bottom: 5px; 
+  border-radius: 1em;
+  background-color:#9fe6ec;
 }
 
 #anxiety-c {
@@ -141,8 +160,10 @@ font-weight: bold;
   font-weight: bold;
   text-align: middle;
   text-align: center;
-  border: 4px solid white;
-  background-color: rgba(238, 229, 102, 0.733);
+  border-collapse: collapse;
+  border-radius: 1em;
+  margin-bottom: 5px; 
+  background-color: #f0d485;
 }
 
 #anxiety-d {
@@ -151,8 +172,10 @@ font-weight: bold;
   font-weight: bold;
   text-align: middle;
   text-align: center;
-  border: 4px solid white;
-  background-color: rgba(255, 128, 43, 0.767);
+  border-collapse: collapse;
+  border-radius: 1em;
+  margin-bottom: 5px; 
+  background-color: #f19c0a;
 }
 
 #anxiety-e {
@@ -161,7 +184,9 @@ font-weight: bold;
   font-weight: bold;
   text-align: middle;
   text-align: center;
-  border: 4px solid white;
+  border-collapse: collapse;
+  border-radius: 1em;
+  margin-bottom: 5px; 
   background-color: rgba(241, 86, 86, 0.836);
 }
 
@@ -171,7 +196,9 @@ font-weight: bold;
   font-weight: bold;
   text-align: middle;
   text-align: center;
-  border: 4px solid white;
+  border-collapse: collapse;
+  border-radius: 1em;
+  margin-bottom: 5px; 
   background-color: lightgreen;
 }
 
@@ -182,8 +209,10 @@ font-weight: bold;
   font-weight: bold;
   text-align: middle;
   text-align: center;
-  border: 4px solid white;
-  background-color: rgb(83, 183, 223);
+  border-collapse: collapse;
+  border-radius: 1em;
+  margin-bottom: 5px; 
+  background-color: #9fe6ec;
 }
 
 #depression-c {
@@ -192,8 +221,10 @@ font-weight: bold;
   font-weight: bold;
   text-align: middle;
   text-align: center;
-  border: 4px solid white;
-  background-color: rgba(238, 229, 102, 0.733);
+  border-collapse: collapse;
+  border-radius: 1em;
+  margin-bottom: 5px; 
+  background-color: #f0d485;
 }
 
 #depression-d {
@@ -202,8 +233,10 @@ font-weight: bold;
   font-weight: bold;
   text-align: middle;
   text-align: center;
-  border: 4px solid white;
-  background-color: rgba(255, 128, 43, 0.767);
+  border-collapse: collapse;
+  border-radius: 1em;
+  margin-bottom: 5px; 
+  background-color: #f19c0a;
 }
 
 #depression-e {
@@ -212,7 +245,9 @@ font-weight: bold;
   font-weight: bold;
   text-align: middle;
   text-align: center;
-  border: 4px solid white;
+  border-collapse: collapse;
+  border-radius: 1em;
+  margin-bottom: 5px; 
   background-color: rgba(241, 86, 86, 0.836);
 }
 
@@ -222,7 +257,9 @@ font-weight: bold;
   font-weight: bold;
   text-align: middle;
   text-align: center;
-  border: 4px solid white;
+  border-collapse: collapse;
+  border-radius: 1em;
+  margin-bottom: 5px; 
   background-color: lightgreen;
 }
 
@@ -233,8 +270,10 @@ font-weight: bold;
   font-weight: bold;
   text-align: middle;
   text-align: center;
-  border: 4px solid white;
-  background-color: rgb(83, 183, 223);
+  border-collapse: collapse;
+  border-radius: 1em;
+  margin-bottom: 5px; 
+  background-color:#9fe6ec;
 }
 
 #stress-c {
@@ -243,8 +282,10 @@ font-weight: bold;
   font-weight: bold;
   text-align: middle;
   text-align: center;
-  border: 4px solid white;
-  background-color: rgba(238, 229, 102, 0.733);
+  border-collapse: collapse;
+  border-radius: 1em;
+  margin-bottom: 5px; 
+  background-color: #f0d485;
 }
 
 #stress-d {
@@ -253,8 +294,10 @@ font-weight: bold;
   font-weight: bold;
   text-align: middle;
   text-align: center;
-  border: 4px solid white;
-  background-color: rgba(255, 128, 43, 0.767);
+  border-collapse: collapse;
+  border-radius: 1em;
+  margin-bottom: 5px; 
+  background-color: #f19c0a;
 }
 
 #stress-e {
@@ -263,7 +306,9 @@ font-weight: bold;
   font-weight: bold;
   text-align: middle;
   text-align: center;
-  border: 4px solid white;
+  border-collapse: collapse;
+  border-radius: 1em;
+  margin-bottom: 5px; 
   background-color: rgba(241, 86, 86, 0.836);
 }
 

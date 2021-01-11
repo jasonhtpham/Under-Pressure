@@ -5,8 +5,8 @@ let path = require('path');
 const moment = require('moment');
 //const { CLIENT_RENEG_WINDOW } = require("tls");
 
-const dbName='users-t1'
-const answersDB = 'answers'
+const UsersDB='users'
+const AnswersDB = 'answers'
 //var app = require('express')();
 //let http = require('http').createServer(app);
 //let io = require('socket.io')(http);
@@ -14,7 +14,7 @@ const answersDB = 'answers'
 
 
 const MongoClient = require('mongodb').MongoClient;
-const uri = "mongodb+srv://dbUser:dbUser@hyperledgercertificate.hgp6r.mongodb.net/firstdb?retryWrites=true&w=majority";
+const uri = "mongodb+srv://underPressureAdmin:adminpassword@cluster0.lbivv.mongodb.net/chatbot?retryWrites=true&w=majority";
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
 //const port = appEnv.port || 8080;
@@ -152,7 +152,7 @@ const createNewUser = async (userId) => {
      },*/
   try {
     await client.connect();
-    const userData = await client.db("chatbot").collection(dbName).find({ userId }).toArray()
+    const userData = await client.db("chatbot").collection(UsersDB).find({ userId }).toArray()
     console.log(userId)
     //console.log(userData)
     if (userData.length < 1) {
@@ -168,7 +168,7 @@ const createNewUser = async (userId) => {
       }
 
 
-      const collection = await client.db("chatbot").collection(dbName).insertOne(
+      const collection = await client.db("chatbot").collection(UsersDB).insertOne(
         {
           userId: userId,
           dateCreated: Date.now(),
@@ -219,7 +219,7 @@ const createNewUser = async (userId) => {
 const getUserData = async (userId) => {
   try {
     await client.connect();
-    const userData = await client.db("chatbot").collection(dbName).findOne({ userId })
+    const userData = await client.db("chatbot").collection(UsersDB).findOne({ userId })
 
     //console.log('[getUserData]:',userData)
 
@@ -244,7 +244,7 @@ const updateAnswer = async (userId, timestamp, parameters) => {
 
   // console.log('[Check Timestamp]', timestamp);
 
-  client.db("chatbot").collection(answersDB).insertOne({
+  client.db("chatbot").collection(AnswersDB).insertOne({
     "questionNumber": questionIndex,
     "userId": userId,
     "answer" : userAnswer.value,
@@ -256,7 +256,7 @@ const updateAnswer = async (userId, timestamp, parameters) => {
   })
 
   if (!userData.allAnswered) {
-    client.db("chatbot").collection(dbName).updateOne({ userId: userId, 'answers.id': questionIndex }, {
+    client.db("chatbot").collection(UsersDB).updateOne({ userId: userId, 'answers.id': questionIndex }, {
       $set: { "answers.$.answered": true, "answers.$.value": userAnswer.value, "answers.$.timestamp" : timestamp }
     }, (err, result) => {
       if (err) {
@@ -265,7 +265,7 @@ const updateAnswer = async (userId, timestamp, parameters) => {
     })
 
     if (questionIndex === 21) {
-      client.db("chatbot").collection(dbName).updateOne({ userId: userId}, {
+      client.db("chatbot").collection(UsersDB).updateOne({ userId: userId}, {
         $set: { allAnswered : true, dateCompleted: Date.now() }
       }, (err, result) => {
         if (err) {
@@ -440,7 +440,7 @@ app.post("/bot", async (request, response) => {
 });
 
 const updateAttempt = async (mentalState, userId, userData) => {
-  client.db("chatbot").collection(dbName).updateOne({ userId: userId}, {
+  client.db("chatbot").collection(UsersDB).updateOne({ userId: userId}, {
     $addToSet: {
       attempts:{
         completedTime: userData.dateCompleted,
@@ -519,7 +519,7 @@ app.get("/results", async (request, response) => {
   try {
     try {
       await client.connect();
-      const testResults = await client.db("chatbot").collection(answersDB).find({}).toArray();
+      const testResults = await client.db("chatbot").collection(AnswersDB).find({}).toArray();
 
       // console.log('[Test Results]:', testResults)
 

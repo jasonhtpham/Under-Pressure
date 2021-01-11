@@ -6,7 +6,7 @@ $(document).ready(function () {
     $('.dataTables_length').addClass('bs-select');
 
   $('#csvButton').click( () => {
-    $("#answersTable").table2excel({ 
+    $("#downloadTable").table2excel({ 
       filename: "Answers.xls" 
     }); 
   });

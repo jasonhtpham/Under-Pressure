@@ -53,7 +53,7 @@
             </div>
 
             <div class="row" style="overflow-x:auto;">
-                <table class="" id="answersTable">
+                <table id="answersTable">
                     <thead>
                         <tr>
                             <th>Users</th>
@@ -75,12 +75,37 @@
                         
                     </tbody>
                 </table>
-            </div>    
+            </div>
+
+            <div class="row" style="overflow-x:auto; display: none;">
+                <table id="downloadTable">
+                    <thead>
+                        <tr>
+                            <th>Users</th>
+                            <th>Question</th>
+                            <th>Answer Value</th>
+                            <th>Time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% for(var i=0; i < users.length; i++) {%>
+                            <tr>
+                                <td> <%= users[i].userId %> </td>
+                                <td> <%= users[i].questionNumber %> </td>
+                                <td> <%= users[i].answer %> </td>
+                                <td> <%= timeCompleted[i] %> </td>
+                            </tr>
+
+                            <% } %>
+                        
+                    </tbody>
+                </table>
+            </div>
           
         </div>
     
     </main>
-    
+
     <footer class="page-footer" style=" background-color: #ae93d9;">
         <div class="footer-copyright">
           <div class="container">

@@ -14,7 +14,7 @@ const AnswersDB = 'answers'
 
 
 const MongoClient = require('mongodb').MongoClient;
-const uri = "mongodb+srv://underPressureAdmin:adminpassword@cluster0.lbivv.mongodb.net/chatbot?retryWrites=true&w=majority";
+const uri = "mongodb+srv://admin:admin@underpressure.ecsmz.mongodb.net/chatbot?retryWrites=true&w=majority";
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
 //const port = appEnv.port || 8080;
@@ -326,7 +326,7 @@ const handleLogicState = async (webhookRequest) => {
             "buttons": [
               {
                 "text": "Show results",
-                "postback": `https://f23ad7c602d7.ngrok.io/bot/profile?userId=${userId}`
+                "postback": `https://aebb3eeba2d2.ngrok.io/bot/profile?userId=${userId}`
               },
               {
                 "text": "Home",
